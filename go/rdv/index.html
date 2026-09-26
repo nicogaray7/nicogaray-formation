@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5435447054359850" crossorigin="anonymous"></script>
+  <!-- Consent Mode v2 par défaut (mis à jour ensuite par Axeptio) -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied',
+      'analytics_storage':'granted','functionality_storage':'granted','security_storage':'granted'
+    });
+  </script>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-54MMFRP');</script>
+  <!-- End Google Tag Manager -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L2DZPV8S00"></script>
+  <script>
+    gtag('js', new Date());
+    gtag('config', 'G-L2DZPV8S00');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Redirection vers la prise de rendez-vous…</title>
+  <style>
+    body{font-family:'Google Sans Text','Google Sans',system-ui,sans-serif;background:#07080f;color:#e8eaf6;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center}
+    a{color:#818cf8}
+  </style>
+  <script>
+    (function(){
+      // Lit les paramètres lead et email de l'URL
+      var p = new URLSearchParams(window.location.search);
+      function clean(v){ return (v||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,60); }
+      var lead = clean(p.get('lead') || p.get('utm_content'));
+      var email = clean(p.get('email') || p.get('utm_term'));
+      // Destination Calendly, en conservant l'attribution
+      var base = 'https://calendly.com/garay-nico/30min';
+      function val(k, d){ var v = p.get(k); return v ? encodeURIComponent(v) : d; }
+      var qs = 'utm_source=' + val('utm_source','email') + '&utm_medium=' + val('utm_medium','site') + '&utm_campaign=' + val('utm_campaign','prospection-bordeaux');
+      if (lead)  qs += '&utm_content=' + encodeURIComponent(lead);
+      if (email) qs += '&utm_term=' + encodeURIComponent(email);
+      var dest = base + '?' + qs;
+      window.__dest = dest;
+      // Applique le choix mémorisé (opt-out) : granted par défaut, denied si l'utilisateur a refusé
+      try { var _r = localStorage.getItem('ng-pref-v1'); if (_r) { gtag('consent','update',{ 'analytics_storage': JSON.parse(_r).analytics ? 'granted' : 'denied' }); } } catch(e){}
+      // Redirige une seule fois, APRES l'envoi du beacon GA4
+      var redirected = false;
+      function go(){ if (redirected) return; redirected = true; window.location.replace(dest); }
+      // Envoie l'évènement GA4 clic_rdv DIRECTEMENT via gtag (gtag.js déjà chargé),
+      // avec event_callback pour rediriger une fois le hit parti. Plus fiable que
+      // la couche de données + tag GTM avant une redirection rapide.
+      // On garde aussi le push dataLayer pour ceux qui veulent un déclencheur GTM.
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'clic_rdv_dl', lead: lead || '(non renseigne)', email_sequence: email || '(non renseigne)' });
+      if (typeof gtag === 'function') {
+        gtag('event', 'clic_rdv', {
+          lead: lead || '(non renseigne)',
+          email_sequence: email || '(non renseigne)',
+          transport_type: 'beacon',
+          event_callback: go,
+          event_timeout: 1500
+        });
+      } else { go(); }
+      // Filet de sécurité si gtag absent ou callback non appelé
+      setTimeout(go, 2000);
+    })();
+  </script>
+</head>
+<body>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54MMFRP" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <div>
+    <p>Redirection vers la prise de rendez-vous…</p>
+    <p><a id="manual" href="https://calendly.com/garay-nico/30min">Cliquez ici si rien ne se passe</a></p>
+  </div>
+  <script>
+    // Filet de sécurité : met à jour le lien manuel et redirige si JS du head a échoué
+    (function(){
+      try {
+        var a = document.getElementById('manual');
+        if (window.__dest && a) a.href = window.__dest;
+      } catch(e){}
+    })();
+  </script>
+</body>
+</html>
